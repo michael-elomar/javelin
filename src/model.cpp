@@ -3,13 +3,37 @@
 
 namespace javelin {
 
-Model::Model() {}
+Model *Model::create(double mass, Eigen::Matrix3d inertia)
+{
+	if (mass == 0.0) {
+		std::cerr << "Mass cannot be 0" << std::endl;
+		return nullptr;
+	}
+
+	if (inertia.determinant() == 0.0) {
+		std::cerr << "Invalid inertia matrix: it must be invertible"
+			  << std::endl;
+		return nullptr;
+	}
+
+	return new Model(mass, inertia);
+}
+
+Model::Model(double mass, Eigen::Matrix3d inertia)
+	: mMass(mass), mInertia(inertia)
+{
+}
 
 Model::~Model() {}
 
-void Model::addForce(Eigen::Vector3d &force)
+void Model::addWorldForce(Eigen::Vector3d &force)
 {
-	totalForce += force;
+	mTotalForce += force;
+}
+
+void Model::addWorldTorque(Eigen::Vector3d &torque)
+{
+	mTotalTorque += torque;
 }
 
 bool Model::isStatic()
@@ -19,10 +43,10 @@ bool Model::isStatic()
 
 void Model::update()
 {
-	pos += vel * mTimeStep;
-	vel += (totalForce / mass) * mTimeStep;
+	mPos += mVel * mTimeStep;
+	mVel += (mTotalForce / mMass) * mTimeStep;
 
-	std::cout << "Position: " << pos << std::endl;
+	std::cout << "Position: " << mPos << std::endl;
 }
 
 } // namespace javelin
