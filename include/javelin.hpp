@@ -63,13 +63,18 @@ private:
 class Model {
 
 private:
-	Model(double mass, Eigen::Matrix3d inertia);
+	Model(const double mass,
+	      const Eigen::Matrix3d &inertia,
+	      const std::string &name);
 	void setWorld(World *parentWorld);
 	void setLogger(TelemetryLogger *logger);
+	void logTelemetry();
 
 public:
 	~Model();
-	static Model *create(double mass, Eigen::Matrix3d inertia);
+	static Model *create(const double mass,
+			     const Eigen::Matrix3d &inertia,
+			     const std::string &name);
 
 	/* expressed in world inertial frame */
 	void addWorldForce(const Eigen::Vector3d &force);
@@ -142,11 +147,12 @@ private:
 
 	Eigen::Matrix3d mMapAngularVelToEuler;
 
-	double mMass;
-	Eigen::Matrix3d mInertia;
+	const double mMass;
+	const Eigen::Matrix3d mInertia;
 
 	double mTimeStep{1e-3};
 	uint32_t id{0};
+	const std::string mName;
 
 	World *mParentWorld;
 	TelemetryLogger *mLogger;
@@ -174,10 +180,8 @@ private:
 	double mSimTime{0.0};
 };
 
-class QuadCopter : public Model {
-};
+class QuadCopter : public Model {};
 
-class Plane : public Model {
-};
+class Plane : public Model {};
 
 } // namespace javelin

@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 	};
 
 	javelin::World world;
-	javelin::Model *model = javelin::Model::create(1.0, inertia);
+	javelin::Model *model = javelin::Model::create(1.0, inertia, "body");
 
 	world.insertModel(model);
 

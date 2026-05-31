@@ -21,8 +21,8 @@ uint64_t TelemetryLogger::getCurrentTimestamp()
 
 TelemetryLogger::TelemetryLogger()
 {
-	std::string filename;
-	mLogFile.open("~/log.bin", std::ios::binary | std::ios::trunc);
+	std::string filename = std::string(std::getenv("HOME")) + "/log.bin";
+	mLogFile.open(filename, std::ios::binary | std::ios::trunc);
 	if (!mLogFile.is_open()) {
 		throw std::runtime_error("Failed to open binary log file: "
 					 + filename);
