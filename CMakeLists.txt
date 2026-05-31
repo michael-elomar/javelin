@@ -11,6 +11,7 @@ find_package(Eigen3 REQUIRED)
 
 set(SRC_FILES
 	src/main.cpp
+	src/logger.cpp
 	src/model.cpp
 	src/world.cpp
 )

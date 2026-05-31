@@ -13,13 +13,11 @@ int main(int argc, char *argv[])
 
 	world.insertModel(model);
 
-	Eigen::Vector3d force{0, 0, 1};
+	Eigen::Vector3d force{0, 0, 1}, point{1, 0, 0}, torque{0, 0, 1};
 
-	model->addWorldForce(force);
+	model->addRelativeTorque(torque);
 
-	while (true) {
-		world.step();
-	}
+	world.spin(10);
 
 	delete model;
 
