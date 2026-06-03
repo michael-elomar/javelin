@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <mutex>
+#include <neutron.hpp>
 
 namespace javelin {
 
@@ -88,6 +89,10 @@ public:
 				     const Eigen::Vector3d &point);
 	void addRelativeTorque(const Eigen::Vector3d &torque);
 
+	/* getters */
+	Eigen::Vector3d LinearAcc();
+	Eigen::Vector3d AngularVel();
+
 	/* returns true if model is not meant for be moved */
 	bool isStatic();
 
@@ -165,23 +170,34 @@ public:
 	World();
 	~World();
 
+	static void sigHandler(int signum);
+
 	bool insertModel(Model *modelPtr);
 	double getSimTime();
 
+	void updateForces(Model *model);
 	bool step();
 
 	bool spin();
 	bool spin(double ts);
 
 private:
+	neutron::Loop *mLoop;
+	neutron::Timer *mTimer;
+	neutron::Timer::Handler *mHandler;
+
 	TelemetryLogger *mLogger;
 	std::vector<Model *> mModels;
 	double mTimeStep{1e-3};
 	double mSimTime{0.0};
+
+	bool mRunning;
+	inline static World *sInstance;
 };
 
-class QuadCopter : public Model {};
+class QuadCopter : public Model {
+};
 
-class Plane : public Model {};
-
+class Plane : public Model {
+};
 } // namespace javelin

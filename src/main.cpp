@@ -1,4 +1,6 @@
+#include <cmath>
 #include <javelin.hpp>
+#include <math.h>
 
 int main(int argc, char *argv[])
 {
@@ -8,18 +10,18 @@ int main(int argc, char *argv[])
 		{0, 0, 1},
 	};
 
-	javelin::World world;
+	javelin::World *world = new javelin::World();
 	javelin::Model *model = javelin::Model::create(1.0, inertia, "body");
 
-	world.insertModel(model);
+	// javelin::Sensor *imu = new javelin::ImuSensor("@unix:imu");
+	// model->addSensor(imu);
 
-	Eigen::Vector3d force{0, 0, 1}, point{1, 0, 0}, torque{0, 0, 1};
+	world->insertModel(model);
 
-	model->addRelativeTorque(torque);
-
-	world.spin(10);
+	world->spin(10);
 
 	delete model;
+	delete world;
 
 	return 0;
 }

@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Eigen3 REQUIRED)
+find_package(Protobuf REQUIRED)
 
 set(SRC_FILES
 	src/main.cpp
@@ -21,9 +22,18 @@ set(INCLUDE
 	src
 )
 
+add_subdirectory(proto)
+get_property(PROTO_CC_HEADERS GLOBAL PROPERTY PROTO_CC_HEADERS)
+list(APPEND INCLUDE ${PROTO_CC_HEADERS})
+
 add_executable(${PROJECT_NAME} ${SRC_FILES})
 target_include_directories(${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${INCLUDE}>)
-target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
+target_link_libraries(${PROJECT_NAME} PUBLIC
+	Eigen3::Eigen
+	protobuf::libprotobuf
+	nexus
+	neutron
+)
 
 #======== Install Support ========#
 

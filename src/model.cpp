@@ -137,9 +137,24 @@ void Model::addWorldForceAtPoint(const Eigen::Vector3d &force,
 				.cross(mRotateToBodyFrame * force);
 }
 
+Eigen::Vector3d Model::LinearAcc()
+{
+	return mAcc;
+}
+
+Eigen::Vector3d Model::AngularVel()
+{
+	return mAngularVel;
+}
+
 void Model::addWorldTorque(const Eigen::Vector3d &torque)
 {
 	mTotalTorque += mRotateToBodyFrame * torque;
+}
+
+void Model::addSensor(Sensor *sensor)
+{
+	mSensors.push_back(sensor);
 }
 
 bool Model::isStatic()
@@ -210,5 +225,15 @@ void Model::postUpdate()
 	/* TODO
 	 *	1. Update sensors
 	 * */
+
+	/* clear forces and torques for next time step */
+	mTotalForce = {0, 0, 0};
+	mTotalTorque = {0, 0, 0};
+
+	// for (auto sensor : mSensors) {
+	// 	nexus::Message *msg = sensor->aquireData();
+	// 	sensor->publishData(msg);
+	// 	delete msg;
+	// }
 }
 } // namespace javelin
