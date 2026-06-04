@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package javelin;
+
+message Imu {
+  string entity_name = 1;
+
+  double gyro_x = 2;
+  double gyro_y = 3;
+  double gyro_z = 4;
+
+  double acc_x = 5;
+  double acc_y = 6;
+  double acc_z = 7;
+
+}
